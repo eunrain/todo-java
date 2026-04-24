@@ -6,11 +6,13 @@ import com.example.todo_java.domain.user.User;
 import com.example.todo_java.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class TodoService {
     private final TodoRepository todoRepository;
     private final UserRepository userRepository;
@@ -31,6 +33,7 @@ public class TodoService {
     }
 
     // 생성
+    @Transactional
     public TodoResponse save(TodoRequest request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -39,6 +42,7 @@ public class TodoService {
     }
 
     // 수정
+    @Transactional
     public TodoResponse update(Long id, TodoRequest request) {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Todo not found"));
@@ -47,6 +51,7 @@ public class TodoService {
     }
 
     // 삭제
+    @Transactional
     public void delete(Long id) {
         todoRepository.deleteById(id);
     }
