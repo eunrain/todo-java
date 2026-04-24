@@ -1,8 +1,10 @@
 package com.example.todo_java.domain.user;
 
+import com.example.todo_java.domain.user.dto.UserRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 
@@ -21,6 +23,14 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(nullable = false)
+    private LocalDateTime updatedAt = LocalDateTime.now();
+
+    public User(UserRequest request) {
+        this.email = request.getEmail();
+        this.password = request.getPassword();
+    }
 }
