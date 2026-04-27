@@ -5,12 +5,14 @@ import com.example.todo_java.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "todos")
 @Getter
+@Setter // JDBC용
 @NoArgsConstructor
 public class Todo {
     @Id
