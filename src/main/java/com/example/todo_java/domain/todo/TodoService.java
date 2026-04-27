@@ -23,7 +23,7 @@ public class TodoService {
     // 전체 조회
     public Page<TodoResponse> findAll(int page, int size) {
         PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        return todoRepository.findAll(pageable)
+        return todoRepository.findAllWithUser(pageable)
                 .map(TodoResponse::new);
     }
 
