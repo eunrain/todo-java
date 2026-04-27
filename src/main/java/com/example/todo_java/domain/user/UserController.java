@@ -4,9 +4,8 @@ import com.example.todo_java.domain.user.dto.UserRequest;
 import com.example.todo_java.domain.user.dto.UserResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -16,8 +15,10 @@ public class UserController {
 
     // 전체 조회
     @GetMapping
-    public List<UserResponse> findAll() {
-        return userService.findAll();
+    public Page<UserResponse> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return userService.findAll(page, size);
     }
 
     // 단건 조회

@@ -4,9 +4,10 @@ import com.example.todo_java.domain.user.dto.UserRequest;
 import com.example.todo_java.domain.user.dto.UserResponse;
 import com.example.todo_java.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -14,11 +15,10 @@ public class UserService {
     private final UserRepository userRepository;
 
     // 전체 조회
-    public List<UserResponse> findAll() {
-        return userRepository.findAll()
-                .stream()
-                .map(UserResponse::new)
-                .toList();
+    public Page<UserResponse> findAll(int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        return userRepository.findAll(pageable)
+                .map(UserResponse::new);
     }
 
     // 단건 조회
