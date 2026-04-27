@@ -2,6 +2,7 @@ package com.example.todo_java.domain.user;
 
 import com.example.todo_java.domain.user.dto.UserRequest;
 import com.example.todo_java.domain.user.dto.UserResponse;
+import com.example.todo_java.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class UserService {
     // 단건 조회
     public UserResponse findById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException(id));
         return new UserResponse(user);
     }
 

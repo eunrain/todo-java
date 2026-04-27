@@ -4,6 +4,8 @@ import com.example.todo_java.domain.todo.dto.TodoRequest;
 import com.example.todo_java.domain.todo.dto.TodoResponse;
 import com.example.todo_java.domain.user.User;
 import com.example.todo_java.domain.user.UserRepository;
+import com.example.todo_java.exception.TodoNotFoundException;
+import com.example.todo_java.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +30,7 @@ public class TodoService {
     // 단건 조회
     public TodoResponse findById(Long id) {
         Todo todo = todoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Todo not found"));
+                .orElseThrow(() -> new TodoNotFoundException(id));
         return new TodoResponse(todo);
     }
 
@@ -36,7 +38,7 @@ public class TodoService {
     @Transactional
     public TodoResponse save(TodoRequest request) {
         User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException(request.getUserId()));
         Todo todo = new Todo(request, user);
         return new TodoResponse(todoRepository.save(todo));
     }
@@ -45,7 +47,7 @@ public class TodoService {
     @Transactional
     public TodoResponse update(Long id, TodoRequest request) {
         Todo todo = todoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Todo not found"));
+                .orElseThrow(() -> new TodoNotFoundException(id));
         todo.update(request.getTitle(), request.getContent(), request.getDone());
         return new TodoResponse(todoRepository.save(todo));
     }
