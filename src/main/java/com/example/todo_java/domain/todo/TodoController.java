@@ -4,9 +4,8 @@ import com.example.todo_java.domain.todo.dto.TodoRequest;
 import com.example.todo_java.domain.todo.dto.TodoResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/todos")
@@ -17,8 +16,10 @@ public class TodoController {
 
     // 전체 조회
     @GetMapping
-    public List<TodoResponse> findAll() {
-        return todoService.findAll();
+    public Page<TodoResponse> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return todoService.findAll(page, size);
     }
 
     // 단건 조회
